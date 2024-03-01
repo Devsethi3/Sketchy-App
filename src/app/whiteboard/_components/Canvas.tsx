@@ -9,7 +9,7 @@ import { CursorPresence } from "./CursorPresence"
 import { pointerEventToCanvasPoint } from "@/libs/utils"
 import { LiveObject } from "@liveblocks/client"
 import { nanoid } from "nanoid"
-import LayerPreview from "./LayerPreview"
+import { LayerPreview } from "./LayerPreview"
 
 const MAX_LAYERS = 100;
 
