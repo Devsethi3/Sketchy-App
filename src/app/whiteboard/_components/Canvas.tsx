@@ -11,6 +11,7 @@ import { LiveObject } from "@liveblocks/client"
 import { nanoid } from "nanoid"
 import { LayerPreview } from "./LayerPreview"
 import { SelectionBox } from "./SelectionBox"
+import { SelectionTools } from "./SelectionTools"
 
 const MAX_LAYERS = 100;
 
@@ -307,6 +308,7 @@ const Canvas = () => {
                     undo={history.undo}
                     redo={history.redo}
                 />
+                <SelectionTools camera={camera} setLastUsedColor={setLastUsedColor} />
                 <svg className="h-[100vh] w-[100vw]" onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerDown={onPointerDown} onPointerLeave={onPointerLeave} onWheel={onWheel}>
                     <g style={{ transform: `translate(${camera.x}px,${camera.y}px)` }}>
                         {layerIds.map((layerId) => (
