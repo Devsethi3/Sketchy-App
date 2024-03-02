@@ -3,6 +3,7 @@
 import { memo } from "react"
 import { useStorage } from "../../../../liveblocks.config"
 import { LayerType } from "@/types/canvas"
+import { Rectangle } from "./Rectangle"
 
 interface LayerPreviewProps {
     id: string
@@ -20,7 +21,7 @@ export const LayerPreview = memo(({ id, onLayerPointerDown, selectionColor }: La
     switch (layer.type) {
         case LayerType.Rectangle:
             return (
-                <div>Rectangle</div>
+                <Rectangle id={id} layer={layer} onPointerDown={onLayerPointerDown} selectionColor={selectionColor} />
             )
 
         default:
