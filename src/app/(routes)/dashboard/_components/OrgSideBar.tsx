@@ -1,6 +1,5 @@
 "use client"
-
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { LuChevronsUpDown } from "react-icons/lu";
 import { motion } from 'framer-motion';
 import { BiSolidDashboard } from "react-icons/bi";
@@ -10,6 +9,8 @@ import { db } from "@/config/firebaseConfig";
 import Link from "next/link";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import Modal from "@/app/components/modal/Modal";
+import { useSelectedTeam } from "@/context/SelectedTeamContext";
 
 interface Team {
     id: string;
@@ -21,24 +22,24 @@ interface Team {
 
 const OrgSideBar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [teams, setTeams] = useState<Team[]>([]);
     const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
-
+    
     const { data: session } = useSession()
 
     const handleTeamSelect = (team: Team) => {
         if (selectedTeam?.id === team.id) {
-            setIsOpen(!isOpen); // Toggle the dropdown menu if the same team is selected again
+            setIsOpen(!isOpen);
         } else {
             setSelectedTeam(team);
-            setIsOpen(false); // Close the dropdown after selecting a team
+            setIsOpen(false);
         }
     };
 
-
     useEffect(() => {
         const fetchTeams = async () => {
-            if (!session) return; // If no user is authenticated, do nothing
+            if (!session) return;
 
             const querySnapshot = await getDocs(
                 query(collection(db, "teams"), where("userEmail", "==", session?.user?.email))
@@ -86,21 +87,28 @@ const OrgSideBar = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 10 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute flex top-14 z-10 flex-col shadow-lg gap-3 p-3 bg-blue-100 rounded-md left-10"
+                        className="absolute flex top-14 w-[350px] z-10 flex-col shadow-lg gap-3 p-3 bg-blue-100 rounded-md left-10"
                     >
-                        {teams.map((team) => (
-                            <button
-                                key={team.id}
-                                onClick={() => handleTeamSelect(team)}
-                                className={`relative flex items-center gap-4 bg-slate-50 p-2.5 rounded-md cursor-pointer ${selectedTeam?.id === team.id ? "bg-blue-500" : ""
-                                    }`}
-                            >
-                                <div className="w-6 h-6 grid place-items-center text-white font-semibold pt-0.5 rounded-md bg-teal-700">
-                                    {team.name.charAt(0)}
-                                </div>
-                                <p className="pt-[.3rem] whitespace-nowrap font-medium">{team.name}</p>
-                            </button>
-                        ))}
+                        {teams.length === 0 ? (
+                            <>
+                                <div>No teams available. Create a team to get started.</div>
+                                <button className="py-2.5 pt-[.8rem] rounded-md px-8 text-white bg-[#4F46E5]" onClick={() => setIsModalOpen(!isModalOpen)}>Create Your Team</button>
+                            </>
+                        ) : (
+                            teams.map((team) => (
+                                <button
+                                    key={team.id}
+                                    onClick={() => handleTeamSelect(team)}
+                                    className={`relative flex items-center gap-4 bg-slate-50 p-2.5 rounded-md cursor-pointer ${selectedTeam?.id === team.id ? "bg-blue-500" : ""
+                                        }`}
+                                >
+                                    <div className="w-6 h-6 grid place-items-center text-white font-semibold pt-0.5 rounded-md bg-teal-700">
+                                        {team.name.charAt(0)}
+                                    </div>
+                                    <p className="pt-[.3rem] whitespace-nowrap font-medium">{team.name}</p>
+                                </button>
+                            ))
+                        )}
                     </motion.div>
                 )}
             </div>
@@ -113,6 +121,7 @@ const OrgSideBar = () => {
                     <FaStar />
                     <span className="pt-[.2rem] font-medium">Favourite Boards</span>
                 </button>
+                {isModalOpen && <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />}
             </div>
         </div>
     );
