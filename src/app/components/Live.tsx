@@ -38,7 +38,7 @@ const Live = () => {
     return (
         <div onPointerMove={handlePointerMove} onPointerLeave={handlePointerLeave} onPointerDown={handlePointerDown} className='h-screen w-full '>
             <Canvas />
-            <LiveCursors others={others} />
+            {/* <LiveCursors others={others} /> */}
         </div>
     )
 }

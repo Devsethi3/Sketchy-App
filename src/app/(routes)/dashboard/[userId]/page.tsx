@@ -5,7 +5,8 @@ const Dashboard = () => {
   return (
     <div>
       <div className='w-full min-h-screen'>
-        <Link href={"whiteboard/1"}>Whiteboard</Link>
+        WhiteBoard
+        {/* <Link href={"whiteboard/1"}>Whiteboard</Link> */}
       </div>
     </div>
   )

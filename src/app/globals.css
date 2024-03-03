@@ -11,3 +11,6 @@ button:hover .text-xs {
   opacity: 1;
   /* top: 3rem; */
 }
+::-webkit-scrollbar {
+  display: none;
+}

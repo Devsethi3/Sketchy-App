@@ -3,8 +3,8 @@
 import { memo } from "react";
 
 import { connectionIdToColor } from "../../../libs/utils";
-import { SlCursor } from "react-icons/sl";
 import { useOther } from "../../../../liveblocks.config";
+import { GiArrowCursor } from "react-icons/gi";
 
 interface CursorProps {
     connectionId: number;
@@ -33,15 +33,15 @@ export const Cursor = memo(({
             width={name.length * 10 + 24}
             className="relative drop-shadow-md"
         >
-            {/* <SlCursor
+            <GiArrowCursor
                 className="h-5 w-5"
                 style={{
                     fill: connectionIdToColor(connectionId),
                     color: connectionIdToColor(connectionId),
                 }}
-            /> */}
+            />
             <div
-                className="absolute left-4 top-4 px-1.5 py-0.5 rounded-md text-xs text-white font-semibold"
+                className="absolute left-4 top-6 px-1.5 py-0.5 rounded-md text-xs text-white font-semibold"
                 style={{ backgroundColor: connectionIdToColor(connectionId) }}
             >
                 {name}

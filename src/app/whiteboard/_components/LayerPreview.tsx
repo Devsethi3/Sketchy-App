@@ -7,8 +7,8 @@ import { Path } from "./Path";
 import { colorToCss } from "@/libs/utils";
 import { Note } from "./Note";
 import { Ellipse } from "./Ellipse";
-import { Text } from "./text";
 import { Rectangle } from "./Rectangle";
+import { Text } from "./Text";
 
 
 interface LayerPreviewProps {

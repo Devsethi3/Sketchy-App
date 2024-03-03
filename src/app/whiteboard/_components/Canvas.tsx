@@ -5,13 +5,16 @@ import Participants from "./Participants"
 import Toolbar from "./Toolbar"
 import { Camera, CanvasMode, CanvasState, Color, LayerType, Point, Side, XYWH } from "@/types/canvas"
 import { useCanRedo, useCanUndo, useHistory, useMutation, useOthersMapped, useSelf, useStorage } from "../../../../liveblocks.config"
-import { CursorPresence } from "./CursorPresence"
-import { connectionIdToColor, findIntersectingLayersWithRectangle, pointerEventToCanvasPoint, resizeBounds } from "@/libs/utils"
+import { colorToCss, connectionIdToColor, findIntersectingLayersWithRectangle, penPointsToPathLayer, pointerEventToCanvasPoint, resizeBounds } from "@/libs/utils"
 import { LiveObject } from "@liveblocks/client"
 import { nanoid } from "nanoid"
 import { LayerPreview } from "./LayerPreview"
 import { SelectionBox } from "./SelectionBox"
 import { SelectionTools } from "./SelectionTools"
+import { CursorsPresence } from "./CursorPresence"
+import { Path } from "./Path"
+import { useDisableScrollBounce } from "@/hooks/useDisableScrollBounce"
+import { useDeleteLayers } from "@/hooks/useDeleteLayers"
 
 const MAX_LAYERS = 100;
 
@@ -20,7 +23,7 @@ const Canvas = () => {
         mode: CanvasMode.None
     })
 
-    // const pencilDraft = useSelf((me) => me.presence.pencilDraft);
+    const pencilDraft = useSelf((me) => me.presence.pencilDraft);
 
     const [camera, setCamera] = useState<Camera>({ x: 0, y: 0 })
     const [lastUsedColor, setLastUsedColor] = useState<Color>({
@@ -30,10 +33,10 @@ const Canvas = () => {
     });
 
     const layerIds = useStorage((root) => root.layerIds)
+    useDisableScrollBounce();
     const history = useHistory()
     const canUndo = useCanUndo()
     const canRedo = useCanRedo()
-
 
 
     const resizeSelectedLayer = useMutation((
@@ -151,6 +154,76 @@ const Canvas = () => {
         setMyPresence({ selection: ids });
     }, [layerIds]);
 
+    const continueDrawing = useMutation((
+        { self, setMyPresence },
+        point: Point,
+        e: React.PointerEvent,
+    ) => {
+        const { pencilDraft } = self.presence;
+
+        if (
+            canvasState.mode !== CanvasMode.Pencil ||
+            e.buttons !== 1 ||
+            pencilDraft == null
+        ) {
+            return;
+        }
+
+        setMyPresence({
+            cursor: point,
+            pencilDraft:
+                pencilDraft.length === 1 &&
+                    pencilDraft[0][0] === point.x &&
+                    pencilDraft[0][1] === point.y
+                    ? pencilDraft
+                    : [...pencilDraft, [point.x, point.y, e.pressure]],
+        });
+    }, [canvasState.mode]);
+
+
+    const insertPath = useMutation((
+        { storage, self, setMyPresence }
+    ) => {
+        const liveLayers = storage.get("layers");
+        const { pencilDraft } = self.presence;
+
+        if (
+            pencilDraft == null ||
+            pencilDraft.length < 2 ||
+            liveLayers.size >= MAX_LAYERS
+        ) {
+            setMyPresence({ pencilDraft: null });
+            return;
+        }
+
+        const id = nanoid();
+        liveLayers.set(
+            id,
+            new LiveObject(penPointsToPathLayer(
+                pencilDraft,
+                lastUsedColor,
+            )),
+        );
+
+        const liveLayerIds = storage.get("layerIds");
+        liveLayerIds.push(id);
+
+        setMyPresence({ pencilDraft: null });
+        setCanvasState({ mode: CanvasMode.Pencil });
+    }, [lastUsedColor]);
+
+
+    const startDrawing = useMutation((
+        { setMyPresence },
+        point: Point,
+        pressure: number,
+    ) => {
+        setMyPresence({
+            pencilDraft: [[point.x, point.y, pressure]],
+            penColor: lastUsedColor,
+        })
+    }, [lastUsedColor]);
+
     const startMultiSelection = useCallback((
         current: Point,
         origin: Point,
@@ -178,38 +251,12 @@ const Canvas = () => {
         }
 
         if (canvasState.mode === CanvasMode.Pencil) {
-            // startDrawing(point, e.pressure);
+            startDrawing(point, e.pressure);
             return;
         }
 
         setCanvasState({ origin: point, mode: CanvasMode.Pressing });
-    }, [camera, canvasState.mode, setCanvasState]);
-
-    const continueDrawing = useMutation((
-        { self, setMyPresence },
-        point: Point,
-        e: React.PointerEvent,
-    ) => {
-        // const { pencilDraft } = self.presence;
-
-        // if (
-        //     canvasState.mode !== CanvasMode.Pencil ||
-        //     e.buttons !== 1 ||
-        //     pencilDraft == null
-        // ) {
-        //     return;
-        // }
-
-        // setMyPresence({
-        //     cursor: point,
-        //     pencilDraft:
-        //         pencilDraft.length === 1 &&
-        //             pencilDraft[0][0] === point.x &&
-        //             pencilDraft[0][1] === point.y
-        //             ? pencilDraft
-        //             : [...pencilDraft, [point.x, point.y, e.pressure]],
-        // });
-    }, [canvasState.mode]);
+    }, [camera, canvasState.mode, setCanvasState, startDrawing]);
 
 
     const onResizeHandlePointerDown = useCallback((
@@ -237,6 +284,7 @@ const Canvas = () => {
         setMyPresence({ cursor: null });
     }, []);
 
+
     const onPointerUp = useMutation((
         { },
         e
@@ -251,6 +299,8 @@ const Canvas = () => {
             setCanvasState({
                 mode: CanvasMode.None,
             });
+        } else if (canvasState.mode === CanvasMode.Pencil) {
+            insertPath();
         } else if (canvasState.mode === CanvasMode.Inserting) {
             insertLayer(canvasState.layerType, point);
         } else {
@@ -268,6 +318,7 @@ const Canvas = () => {
             history,
             insertLayer,
             unselectLayers,
+            insertPath
         ]);
 
 
@@ -320,33 +371,42 @@ const Canvas = () => {
             updateSelectionNet,
         ]);
 
-    // const deleteLayers = useDeleteLayers();
+    const deleteLayers = useDeleteLayers();
 
-    // useEffect(() => {
-    //     function onKeyDown(e: KeyboardEvent) {
-    //         switch (e.key) {
-    //             // case "Backspace":
-    //             //   deleteLayers();
-    //             //   break;
-    //             case "z": {
-    //                 if (e.ctrlKey || e.metaKey) {
-    //                     if (e.shiftKey) {
-    //                         history.redo();
-    //                     } else {
-    //                         history.undo();
-    //                     }
-    //                     break;
-    //                 }
-    //             }
-    //         }
-    //     }
+    useEffect(() => {
+        function onKeyDown(e: KeyboardEvent) {
+            switch (e.key) {
+                case "Delete": {
+                    deleteLayers();
+                    break;
+                }
+                case "z": {
+                    if (e.ctrlKey || e.metaKey) {
+                        if (e.shiftKey) {
+                            history.redo();
+                        } else {
+                            history.undo();
+                        }
+                        break;
+                    }
+                }
+                case "y": {
+                    if (e.ctrlKey || e.metaKey) {
+                        history.redo();
+                        break;
+                    }
+                }
+                default:
+                    break;
+            }
+        }
 
-    //     document.addEventListener("keydown", onKeyDown);
+        document.addEventListener("keydown", onKeyDown);
 
-    //     return () => {
-    //         document.removeEventListener("keydown", onKeyDown)
-    //     }
-    // }, [deleteLayers, history]);
+        return () => {
+            document.removeEventListener("keydown", onKeyDown);
+        };
+    }, [deleteLayers, history]);
 
     const onLayerPointerDown = useMutation((
         { self, setMyPresence },
@@ -406,7 +466,15 @@ const Canvas = () => {
                                 height={Math.abs(canvasState.origin.y - canvasState.current.y)}
                             />
                         )}
-                        <CursorPresence />
+                        <CursorsPresence />
+                        {pencilDraft != null && pencilDraft.length > 0 && (
+                            <Path
+                                points={pencilDraft}
+                                fill={colorToCss(lastUsedColor)}
+                                x={0}
+                                y={0}
+                            />
+                        )}
                     </g>
                 </svg>
             </div>
