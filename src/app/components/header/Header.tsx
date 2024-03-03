@@ -2,7 +2,7 @@
 import Link from "next/link"
 import Buttons from "../button/Buttons"
 import Image from "next/image"
-import { useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import { useState } from "react"
 import { LuPencil } from "react-icons/lu"
 import { BiSolidDashboard } from "react-icons/bi"
@@ -78,7 +78,7 @@ const Header = () => {
                                             <LuPencil className="hover:text-[#4F46E5]" />
                                             <p className="font-medium">Rename</p>
                                         </button>
-                                        <button className="flex hover:bg-red-100 hover:text-red-400 w-full transition-all rounded-md p-2 items-center gap-3">
+                                        <button onClick={() => signOut()} className="flex hover:bg-red-100 hover:text-red-400 w-full transition-all rounded-md p-2 items-center gap-3">
                                             <TbLogout className=" text-xl" />
                                             <p className="font-medium">Logout</p>
                                         </button>

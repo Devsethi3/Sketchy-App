@@ -2,8 +2,9 @@
 import { useState, useEffect } from "react";
 import { FiPlus } from "react-icons/fi";
 import Modal from "@/app/components/modal/Modal";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
+import { useSession } from "next-auth/react";
 
 interface Team {
   id: string;
@@ -16,10 +17,18 @@ interface Team {
 const SideBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [teams, setTeams] = useState<Team[]>([]);
+  const { data: session } = useSession();
 
   useEffect(() => {
     const fetchTeams = async () => {
-      const querySnapshot = await getDocs(collection(db, "teams"));
+      if (!session) return; // Return if user is not logged in
+
+      const q = query(
+        collection(db, "teams"),
+        where("userEmail", "==", session?.user?.email)
+      );
+      const querySnapshot = await getDocs(q);
+
       const teamsData: Team[] = [];
       querySnapshot.forEach((doc) => {
         const data = doc.data();
@@ -35,7 +44,7 @@ const SideBar = () => {
       setTeams(teamsData);
     };
     fetchTeams();
-  }, []);
+  }, [session]); // Fetch teams whenever the session changes
 
   return (
     <div className="h-full fixed z-10 flex flex-col gap-y-6 left-0 bg-blue-950 text-white w-[70px] p-4">
