@@ -3,7 +3,6 @@
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { CgSearch } from "react-icons/cg";
-import { FaSearch, FaUserCircle } from "react-icons/fa";
 import { GoPlus } from "react-icons/go";
 
 const Navbar = () => {

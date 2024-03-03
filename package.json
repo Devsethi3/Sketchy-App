@@ -12,6 +12,7 @@
     "@liveblocks/client": "^1.10.0",
     "@liveblocks/react": "^1.10.0",
     "clsx": "^2.1.0",
+    "firebase": "^10.8.1",
     "framer-motion": "^11.0.7",
     "mini-svg-data-uri": "^1.4.4",
     "nanoid": "^5.0.6",
