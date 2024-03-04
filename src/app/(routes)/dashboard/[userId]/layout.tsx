@@ -19,7 +19,7 @@ const Layout = ({ children }: LayoutProps) => {
             <OrgSideBar />
             <div className="h-full flex-1">
               <Navbar />
-              <ChildComponentWrapper>{children}</ChildComponentWrapper>
+              {children}
             </div>
           </div>
         </div>
