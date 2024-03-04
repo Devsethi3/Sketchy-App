@@ -8,6 +8,8 @@ import { LuPencil } from "react-icons/lu"
 import { IoClose } from "react-icons/io5"
 import { MdOutlineContentCopy } from "react-icons/md"
 import { RiCheckLine } from "react-icons/ri"
+import { useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 
 const Info = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,6 +17,9 @@ const Info = () => {
   const [title, setTitle] = useState("Project Title");
   const [boardLink, setBoardLink] = useState("");
   const [showCheck, setShowCheck] = useState(false);
+  const router = useRouter()
+
+  const { data: session } = useSession()
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -41,7 +46,10 @@ const Info = () => {
   return (
     <div className="absolute top-2 left-2 bg-white flex items-center rounded-md shadow-md">
       <div className="flex items-center gap-4 p-3 rounded-md">
-        <Link href="/dashboard" className="flex items-center gap-2">
+        <Link href={`/dashboard/${session?.user?.email}`} className="flex items-center gap-2" onClick={(e) => {
+          e.preventDefault();
+          router.push(`/dashboard/${session?.user?.email}`);
+        }}>
           <Image src="/images/logo.svg" width={40} height={40} alt="logo" />
           <p className="font-bold text-xl pt-[.4rem]">SKETCHY</p>
         </Link>

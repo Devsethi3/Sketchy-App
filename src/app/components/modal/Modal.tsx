@@ -82,7 +82,7 @@ const Modal = ({ isOpen, setIsOpen }: ModalProps) => {
                             className="bg-[#4F46E5] mt-4 text-white px-6 py-2 pt-[.7rem] rounded-md hover:bg-[#3f39b5]"
                             onClick={handleCreateTeam}
                         >
-                            Create
+                            Create Team
                         </button>
                     </div>
                 </div>

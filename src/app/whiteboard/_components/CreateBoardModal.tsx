@@ -70,10 +70,10 @@ const CreateBoardModal = ({ isOpen, setIsOpen }: CreateBoardModalProps) => {
                 <div className="fixed top-0 pointer-events-auto left-0 z-30 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
                     <div className="modal-content bg-white text-black w-[450px] p-8 rounded-md shadow-md">
                         <div className="flex items-center mb-4 justify-between">
-                            <h2 className="text-2xl font-bold">Create Team</h2>
+                            <h2 className="text-2xl font-bold">Create Board</h2>
                             <MdClose onClick={() => setIsOpen(false)} className="text-4xl p-2 rounded-full bg-red-50 hover:bg-red-100 text-red-500 cursor-pointer" />
                         </div>
-                        <p className="text-gray-700 mb-4">Give a Name to your Team:</p>
+                        <p className="text-gray-700 mb-4">Give a Name to your Board:</p>
                         <input
                             placeholder="Team Name"
                             type="text"
@@ -83,9 +83,9 @@ const CreateBoardModal = ({ isOpen, setIsOpen }: CreateBoardModalProps) => {
                         />
                         <button
                             className="bg-[#4F46E5] mt-4 text-white px-6 py-2 pt-[.7rem] rounded-md hover:bg-[#3f39b5]"
-                            onClick={handleCreateBoard} // Change the function name
+                            onClick={handleCreateBoard}
                         >
-                            Create Board {/* Update the button text */}
+                            Create Board
                         </button>
                     </div>
                 </div>
