@@ -1,34 +1,28 @@
 "use client"
-import { createContext, useContext, useState, ReactNode } from 'react';
-
-// Define types
-interface Team {
-  id: string;
-  name: string;
-  userEmail: string;
-  userImage: string;
-  userName: string;
-}
+import React, { createContext, useContext, ReactNode } from "react";
 
 interface SelectedTeamContextType {
-  selectedTeam: Team | null;
-  setSelectedTeam: (team: Team | null) => void;
+  selectedTeam: string | null;
+  setSelectedTeam: (team: string | null) => void;
 }
 
-// Create context
-export const SelectedTeamContext = createContext<SelectedTeamContextType | undefined>(
-  undefined
-);
+const SelectedTeamContext = createContext<SelectedTeamContextType>({
+  selectedTeam: null,
+  setSelectedTeam: () => { },
+});
 
-// Custom hook to use the context
-export const useSelectedTeam = () => {
-  return useContext(SelectedTeamContext)
+export const useSelectedTeam = (): SelectedTeamContextType => {
+  return useContext(SelectedTeamContext);
+};
+
+interface SelectedTeamContextProviderProps {
+  children: ReactNode;
 }
 
-// Provider component
-export const SelectedTeamProvider = ({ children }: { children: ReactNode }) => {
-
-  const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
+export const SelectedTeamContextProvider = ({
+  children,
+}: SelectedTeamContextProviderProps) => {
+  const [selectedTeam, setSelectedTeam] = React.useState<string | null>(null);
 
   return (
     <SelectedTeamContext.Provider value={{ selectedTeam, setSelectedTeam }}>

@@ -24,9 +24,8 @@ const OrgSideBar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [teams, setTeams] = useState<Team[]>([]);
-    const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
-    
-    const { data: session } = useSession()
+    const { selectedTeam, setSelectedTeam } = useSelectedTeam(); // using context instead of local state
+    const { data: session } = useSession();
 
     const handleTeamSelect = (team: Team) => {
         if (selectedTeam?.id === team.id) {
@@ -76,9 +75,11 @@ const OrgSideBar = () => {
                     className={`flex items-center gap-4 bg-slate-50 p-2.5 rounded-md ${isOpen ? "bg-blue-500" : ""}`}
                 >
                     <div className="w-6 h-6 grid place-items-center text-white font-semibold pt-0.5 rounded-md bg-teal-700">
-                        {selectedTeam ? selectedTeam.name.charAt(0) : "S"}
+                        {selectedTeam?.name ? selectedTeam.name.charAt(0) : "S"}
                     </div>
-                    <p className="pt-[.3rem] whitespace-nowrap font-medium">{selectedTeam ? selectedTeam.name : "Select Team"}</p>
+                    <p className="pt-[.3rem] whitespace-nowrap font-medium">
+                        {selectedTeam?.name ? selectedTeam.name : "Select Team"}
+                    </p>
                     <LuChevronsUpDown className="text-xl text-gray-600" />
                 </button>
                 {isOpen && (
