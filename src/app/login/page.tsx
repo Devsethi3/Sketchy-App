@@ -11,7 +11,6 @@ const LoginPage = () => {
     const handleSignIn = async () => {
         const result = await signIn('google', { callbackUrl: `/dashboard/${session?.user?.email}` });
 
-        // Check if the result is successful and session exists
         if (result?.error) {
             console.error("Sign-in failed:", result.error);
         } else if (result?.url) {
