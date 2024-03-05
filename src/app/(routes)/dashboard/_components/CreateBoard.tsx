@@ -4,12 +4,14 @@ import CreateBoardModal from "@/app/whiteboard/_components/CreateBoardModal";
 import Image from "next/image";
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { GoPlusCircle } from "react-icons/go";
-import { collection, getDocs, query, where, doc, updateDoc, arrayUnion, arrayRemove, getDoc } from "firebase/firestore";
+import { collection, getDocs, query, where, doc, updateDoc, arrayUnion, arrayRemove, getDoc, deleteDoc } from "firebase/firestore";
 import { db } from "@/config/firebaseConfig";
 import Link from "next/link";
 import { useSelectedTeam } from "@/context/SelectedTeamContext";
 import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
+import { BsThreeDots } from "react-icons/bs";
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 const CreateBoard = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,6 +20,7 @@ const CreateBoard = () => {
     const { data: session } = useSession();
     const [likedBoards, setLikedBoards] = useState({});
     const [loadingBoards, setLoadingBoards] = useState({});
+    const [selectedBoardId, setSelectedBoardId] = useState(null); // State to track selected board id
 
     const toggleFavorite = async (boardId) => {
         setLoadingBoards(prevLoadingBoards => ({ ...prevLoadingBoards, [boardId]: true }));
@@ -41,6 +44,15 @@ const CreateBoard = () => {
             console.error("Error toggling favorite:", error);
         } finally {
             setLoadingBoards(prevLoadingBoards => ({ ...prevLoadingBoards, [boardId]: false }));
+        }
+    };
+
+    const handleDeleteBoard = async (boardId) => {
+        try {
+            await deleteDoc(doc(db, "boards", boardId));
+            setBoards(prevBoards => prevBoards.filter(board => board.id !== boardId));
+        } catch (error) {
+            console.error("Error deleting board:", error);
         }
     };
 
@@ -81,6 +93,19 @@ const CreateBoard = () => {
                 </div>
                 {boards.map(board => (
                     <div key={board.id} className="h-[300px] border rounded-md">
+                        <div className="relative">
+                            <BsThreeDots onClick={() => setSelectedBoardId(selectedBoardId === board.id ? null : board.id)} className="text-4xl absolute right-2 z-40 cursor-pointer p-2 hover:bg-slate-200 top-2 shadow-lg bg-blue-50 rounded-full" />
+                            {selectedBoardId === board.id && <motion.div
+                                initial={{ opacity: 0, y: 50 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 50 }}
+                                className="absolute top-14 rounded-md flex z-50 flex-col shadow-lg gap-1 w-[150px] right-0">
+                                <button onClick={() => handleDeleteBoard(board.id)} className="flex bg-red-100 rounded-md p-2 hover:bg-red-400 hover:text-white px-4 items-center gap-3">
+                                    <RiDeleteBin5Line className="text-xl" />
+                                    <p className="font-medium pt-[.3rem]">Delete</p>
+                                </button>
+                            </motion.div>}
+                        </div>
                         <Link href={`/whiteboard/${board.id}`}>
                             <div className="relative h-[250px]">
                                 <Image src={board?.imageUrl} fill objectFit="cover" alt={board.boardName} />
