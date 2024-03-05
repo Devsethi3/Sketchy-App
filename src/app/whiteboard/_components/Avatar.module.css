@@ -1,0 +1,15 @@
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gradient {
+  background: linear-gradient(45deg, #ff758c, #ff7eb3);
+  color: white;
+  font-weight: bold;
+}
