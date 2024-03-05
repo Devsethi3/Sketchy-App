@@ -30,9 +30,24 @@ const CreateBoardModal = ({ isOpen, setIsOpen }: CreateBoardModalProps) => {
         }
 
         try {
-            // Add a new document to the 'boards' collection with the board name and selected team details
+            const images = [
+                "/images/cat.svg",
+                "/images/data-team.svg",
+                "/images/field.svg",
+                "/images/forest.svg",
+                "/images/indoor.svg",
+                "/images/nature.svg",
+                "/images/otaku.svg",
+                "/images/sunset.svg",
+            ];
+
+            const randomIndex = Math.floor(Math.random() * images.length);
+            const randomImageUrl = images[randomIndex];
+
+            // Add a new document to the 'boards' collection with the board name, random image, and selected team details
             await addDoc(collection(db, "boards"), {
                 boardName: teamName,
+                imageUrl: randomImageUrl, // Set the random image URL
                 teamName: selectedTeam, // Include the selected team
                 userEmail: session.user?.email,
                 userImage: session.user?.image,

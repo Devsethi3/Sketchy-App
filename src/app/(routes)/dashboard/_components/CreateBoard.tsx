@@ -83,7 +83,7 @@ const CreateBoard = () => {
                     <div key={board.id} className="h-[300px] border rounded-md">
                         <Link href={`/whiteboard/${board.id}`}>
                             <div className="relative h-[250px]">
-                                <Image src="/images/cat.svg" fill objectFit="cover" alt={board.boardName} />
+                                <Image src={board?.imageUrl} fill objectFit="cover" alt={board.boardName} />
                             </div>
                         </Link>
                         <div className="flex border-t-2 pt-2 px-4 items-center justify-between">

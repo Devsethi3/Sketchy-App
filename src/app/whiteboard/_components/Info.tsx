@@ -17,7 +17,9 @@ const Info = () => {
   const [title, setTitle] = useState("Project Title");
   const [boardLink, setBoardLink] = useState("");
   const [showCheck, setShowCheck] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
+
+  const [isTitle, setIsTitle] = useState("");
 
   const { data: session } = useSession()
 
@@ -53,7 +55,9 @@ const Info = () => {
           <Image src="/images/logo.svg" width={40} height={40} alt="logo" />
           <p className="font-bold text-xl pt-[.4rem]">SKETCHY</p>
         </Link>
-        <p className="font-medium pl-4 border-l-2 border-gray-300">{title}</p>
+        <p className="font-medium pl-4 border-l-2 border-gray-300">
+          Title
+        </p>
         <div className="pl-2 relative border-l-2 border-gray-300">
           <button onClick={() => setIsOpen(!isOpen)}>
             <div className="relative pt-2 pl-2 flex flex-col items-center">

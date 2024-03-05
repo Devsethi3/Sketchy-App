@@ -11,6 +11,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import Modal from "@/app/components/modal/Modal";
 import { useSelectedTeam } from "@/context/SelectedTeamContext";
+import { useRouter } from "next/navigation";
 
 interface Team {
     id: string;
@@ -26,6 +27,7 @@ const OrgSideBar = () => {
     const [teams, setTeams] = useState<Team[]>([]);
     const { selectedTeam, setSelectedTeam } = useSelectedTeam(); // using context instead of local state
     const { data: session } = useSession();
+    const router = useRouter();
 
     const handleTeamSelect = (team: Team) => {
         if (selectedTeam?.id === team.id) {
@@ -34,6 +36,14 @@ const OrgSideBar = () => {
             setSelectedTeam(team);
             setIsOpen(false);
         }
+    };
+
+    const handleTeamBoardsClick = () => {
+        router.push(`/dashboard/${session?.user?.email}/team-boards`);
+    };
+
+    const handleFavouritesClick = () => {
+        router.push(`/dashboard/${session?.user?.email}/team-boards/favourites`);
     };
 
     useEffect(() => {
@@ -61,17 +71,22 @@ const OrgSideBar = () => {
         fetchTeams();
     }, [session]);
 
+    const handleSelectTeam = () => {
+        router.push(`/dashboard/${session?.user?.email}`);
+        setIsOpen(!isOpen)
+    };
+
     return (
         <div className="hidden min-h-screen lg:flex flex-col space-y-6 min-w-[230px] pl-5 pt-2">
             <div className="flex items-center gap-4 p-3 rounded-md">
-                <Link href="/" className="flex items-center gap-2">
+                <Link href={`/dashboard/${session?.user?.email}`} className="flex items-center gap-2">
                     <Image src="/images/logo.svg" width={40} height={40} alt="logo" />
                     <p className="font-bold text-xl pt-[.4rem]">SKETCHY</p>
                 </Link>
             </div>
             <div className="flex relative items-center flex-col">
                 <button
-                    onClick={() => setIsOpen(!isOpen)}
+                    onClick={handleSelectTeam}
                     className={`flex items-center gap-4 bg-slate-50 p-2.5 rounded-md ${isOpen ? "bg-blue-500" : ""}`}
                 >
                     <div className="w-6 h-6 grid place-items-center text-white font-semibold pt-0.5 rounded-md bg-teal-700">
@@ -114,11 +129,11 @@ const OrgSideBar = () => {
                 )}
             </div>
             <div className="flex relative gap-5 items-start mx-2 flex-col">
-                <button className="flex items-center gap-4 w-full bg-slate-50 p-2.5 rounded-md">
+                <button onClick={handleTeamBoardsClick} className="flex items-center gap-4 w-full border hover:bg-[#4F46E5] transition-all hover:text-white p-2.5 rounded-md">
                     <BiSolidDashboard />
                     <span className="pt-[.2rem] font-medium">Team Boards</span>
                 </button>
-                <button className="flex items-center gap-4 w-full bg-slate-50 p-2.5 rounded-md">
+                <button onClick={handleFavouritesClick} className="flex items-center gap-4 w-full border hover:bg-[#4F46E5] transition-all hover:text-white p-2.5 rounded-md">
                     <FaStar />
                     <span className="pt-[.2rem] font-medium">Favourite Boards</span>
                 </button>

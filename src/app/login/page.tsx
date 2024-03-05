@@ -1,12 +1,22 @@
 "use client";
 import { signIn, useSession } from "next-auth/react"
+import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc"
 
 const LoginPage = () => {
     const { data: session } = useSession();
 
+    const router = useRouter()
+
     const handleSignIn = async () => {
-        await signIn('google', { callbackUrl: `/dashboard/${session?.user?.email}` });
+        const result = await signIn('google', { callbackUrl: `/dashboard/${session?.user?.email}` });
+
+        // Check if the result is successful and session exists
+        if (result?.error) {
+            console.error("Sign-in failed:", result.error);
+        } else if (result?.url) {
+            router.push(result.url);
+        }
     };
 
     return (
