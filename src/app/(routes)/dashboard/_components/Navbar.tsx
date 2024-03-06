@@ -3,13 +3,16 @@
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
-import { BiSolidDashboard } from "react-icons/bi";
+import { BiHomeAlt2, BiSolidDashboard } from "react-icons/bi";
 import { CgSearch } from "react-icons/cg";
 import { GoPlus } from "react-icons/go";
 import { LuPencil } from "react-icons/lu";
 import { TbLogout } from "react-icons/tb";
 import { motion } from 'framer-motion'
 import { useRouter } from "next/navigation";
+import { VscHome } from "react-icons/vsc";
+import { RiHome4Fill } from "react-icons/ri";
+import { MdHome } from "react-icons/md";
 
 const Navbar = () => {
     const router = useRouter();
@@ -41,13 +44,13 @@ const Navbar = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 50 }}
                         className="absolute flex flex-col shadow-lg gap-1 p-3 bg-slate-50 w-[200px] right-0">
-                        <button className="flex hover:bg-indigo-100 w-full hover:text-[#4F46E5] rounded-md p-2 items-center gap-3">
-                            <LuPencil className="hover:text-[#4F46E5]" />
-                            <p className="font-medium">Home</p>
+                        <button onClick={() => router.push("/")} className="flex hover:bg-indigo-100 w-full hover:text-[#4F46E5] rounded-md p-2 items-center gap-3">
+                            <MdHome className="hover:text-[#4F46E5] text-xl" />
+                            <p className="font-medium pt-[.2rem]">Home</p>
                         </button>
                         <button onClick={handleLogout} className="flex hover:bg-red-100 hover:text-red-400 w-full transition-all rounded-md p-2 items-center gap-3">
                             <TbLogout className=" text-xl" />
-                            <p className="font-medium">Logout</p>
+                            <p className="font-medium pt-[.2rem]">Logout</p>
                         </button>
                     </motion.div>}
                 </div>

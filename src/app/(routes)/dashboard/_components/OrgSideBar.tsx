@@ -25,7 +25,7 @@ const OrgSideBar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [teams, setTeams] = useState<Team[]>([]);
-    const { selectedTeam, setSelectedTeam } = useSelectedTeam(); // using context instead of local state
+    const { selectedTeam, setSelectedTeam } = useSelectedTeam();
     const { data: session } = useSession();
     const router = useRouter();
 
@@ -77,7 +77,7 @@ const OrgSideBar = () => {
     };
 
     return (
-        <div className="hidden min-h-screen lg:flex flex-col space-y-6 min-w-[230px] pl-5 pt-2">
+        <div className="lg:flex lg:flex-col lg:space-y-6 lg:min-w-[230px] lg:pl-5 lg:pt-2">
             <div className="flex items-center gap-4 p-3 rounded-md">
                 <Link href={`/dashboard/${session?.user?.email}`} className="flex items-center gap-2">
                     <Image src="/images/logo.svg" width={40} height={40} alt="logo" />
@@ -107,7 +107,7 @@ const OrgSideBar = () => {
                     >
                         {teams.length === 0 ? (
                             <>
-                                <div>No teams available. Create a team to get started.</div>
+                                <div className="text-gray-600">No teams available. Create a team to get started.</div>
                                 <button className="py-2.5 pt-[.8rem] rounded-md px-8 text-white bg-[#4F46E5]" onClick={() => setIsModalOpen(!isModalOpen)}>Create Your Team</button>
                             </>
                         ) : (

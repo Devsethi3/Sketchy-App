@@ -94,12 +94,12 @@ const CreateBoard = () => {
                 {boards.map(board => (
                     <div key={board.id} className="h-[300px] border rounded-md">
                         <div className="relative">
-                            <BsThreeDots onClick={() => setSelectedBoardId(selectedBoardId === board.id ? null : board.id)} className="text-4xl absolute right-2 z-40 cursor-pointer p-2 hover:bg-slate-200 top-2 shadow-lg bg-blue-50 rounded-full" />
+                            <BsThreeDots onClick={() => setSelectedBoardId(selectedBoardId === board.id ? null : board.id)} className="text-4xl absolute right-2 z-10 cursor-pointer p-2 hover:bg-slate-200 top-2 shadow-lg bg-blue-50 rounded-full" />
                             {selectedBoardId === board.id && <motion.div
                                 initial={{ opacity: 0, y: 50 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: 50 }}
-                                className="absolute top-14 rounded-md flex z-50 flex-col shadow-lg gap-1 w-[150px] right-0">
+                                className="absolute top-14 rounded-md flex z-10 flex-col shadow-lg gap-1 w-[150px] right-0">
                                 <button onClick={() => handleDeleteBoard(board.id)} className="flex bg-red-100 rounded-md p-2 hover:bg-red-400 hover:text-white px-4 items-center gap-3">
                                     <RiDeleteBin5Line className="text-xl" />
                                     <p className="font-medium pt-[.3rem]">Delete</p>
