@@ -43,7 +43,7 @@ const Navbar = () => {
                         className="absolute flex flex-col shadow-lg gap-1 p-3 bg-slate-50 w-[200px] right-0">
                         <button className="flex hover:bg-indigo-100 w-full hover:text-[#4F46E5] rounded-md p-2 items-center gap-3">
                             <LuPencil className="hover:text-[#4F46E5]" />
-                            <p className="font-medium">Rename</p>
+                            <p className="font-medium">Home</p>
                         </button>
                         <button onClick={handleLogout} className="flex hover:bg-red-100 hover:text-red-400 w-full transition-all rounded-md p-2 items-center gap-3">
                             <TbLogout className=" text-xl" />
