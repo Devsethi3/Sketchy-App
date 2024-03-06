@@ -1,33 +1,22 @@
-"use client";
+"use client"
 import { signIn, useSession } from "next-auth/react"
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"
 import { FcGoogle } from "react-icons/fc"
-import { RxGithubLogo } from "react-icons/rx";
 
 const LoginPage = () => {
-    const { data: session } = useSession();
 
-    const router = useRouter()
+    const { data: session } = useSession()
+
+    const router = useRouter();
 
     const handleSignInWithGoogle = async () => {
-        const result = await signIn('google', { callbackUrl: `/dashboard/${session?.user?.email}` });
-
-        if (result?.error) {
-            console.error("Sign-in failed:", result.error);
-        } else if (result?.url) {
-            router.push(result.url);
-        }
+        await signIn('google', { callbackUrl: '/dashboard/:email' });
     };
 
-    const handleSignInWithGithub = async () => {
-        const result = await signIn('github', { callbackUrl: `/dashboard/${session?.user?.email}` });
-
-        if (result?.error) {
-            console.error("Sign-in failed:", result.error);
-        } else if (result?.url) {
-            router.push(result.url);
-        }
-    };
+    if (status === 'authenticated' && session?.user?.email) {
+        router.push(`/dashboard/${session.user.email}`);
+        return null;
+    }
 
     return (
         <>
@@ -59,10 +48,6 @@ const LoginPage = () => {
                                 <button onClick={handleSignInWithGoogle} className="flex bg-[#d2d2ff]  rounded-md transition-all w-full items-center gap-3 py-2.5 justify-center">
                                     <FcGoogle className="text-xl" />
                                     <span className="pt-[.3rem] font-medium">Continue With Google</span>
-                                </button>
-                                <button onClick={handleSignInWithGithub} className="flex bg-[#d2d2ff]  rounded-md transition-all w-full items-center gap-3 py-2.5 justify-center">
-                                    <RxGithubLogo className="text-xl" />
-                                    <span className="pt-[.3rem] font-medium">Continue With Github</span>
                                 </button>
                             </div>
 

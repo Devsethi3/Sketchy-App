@@ -83,23 +83,23 @@ const CreateBoard = () => {
 
     return (
         <div>
-            <h2 className="text-3xl font-bold my-5">Team Boards</h2>
-            <div className="grid grid-cols-4 gap-5 mr-10">
-                <div onClick={() => setIsModalOpen(true)} className="bg-[#4F46E5] cursor-pointer rounded-md flex-col flex items-center justify-center h-[300px] text-white">
+            <h2 className="text-2xl lg:text-3xl lg:text-start text-center font-bold my-5">Team Boards</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mr-5 lg:mr-10">
+                <div onClick={() => setIsModalOpen(true)} className="bg-[#4F46E5] cursor-pointer rounded-md flex-col flex items-center justify-center h-[230px] lg:h-[300px] text-white">
                     <button className="text-4xl">
                         <GoPlusCircle />
                     </button>
                     <p className="mt-5 text-xl font-semibold">Create Board</p>
                 </div>
                 {boards.map(board => (
-                    <div key={board.id} className="h-[300px] border rounded-md">
+                    <div key={board.id} className="min-h-[300px] border rounded-md">
                         <div className="relative">
-                            <BsThreeDots onClick={() => setSelectedBoardId(selectedBoardId === board.id ? null : board.id)} className="text-4xl absolute right-2 z-10 cursor-pointer p-2 hover:bg-slate-200 top-2 shadow-lg bg-blue-50 rounded-full" />
+                            <BsThreeDots onClick={() => setSelectedBoardId(selectedBoardId === board.id ? null : board.id)} className="text-4xl absolute right-2 z-[1] cursor-pointer p-2 hover:bg-slate-200 top-2 shadow-lg bg-blue-50 rounded-full" />
                             {selectedBoardId === board.id && <motion.div
                                 initial={{ opacity: 0, y: 50 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: 50 }}
-                                className="absolute top-14 rounded-md flex z-10 flex-col shadow-lg gap-1 w-[150px] right-0">
+                                className="absolute top-14 rounded-md flex z-[1] flex-col shadow-lg gap-1 w-[150px] right-0">
                                 <button onClick={() => handleDeleteBoard(board.id)} className="flex bg-red-100 rounded-md p-2 hover:bg-red-400 hover:text-white px-4 items-center gap-3">
                                     <RiDeleteBin5Line className="text-xl" />
                                     <p className="font-medium pt-[.3rem]">Delete</p>

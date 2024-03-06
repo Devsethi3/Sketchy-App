@@ -14,7 +14,9 @@ button:hover .text-xs {
 ::-webkit-scrollbar {
   display: none;
 }
-
+.sidebar-toggle {
+  display: none;
+}
 @media screen and (max-width: 768px) {
   .nav-menu {
     position: absolute;
@@ -53,9 +55,18 @@ button:hover .text-xs {
     padding: 10px;
     background: #6f68ff;
   }
-  .nav-user{
+  .nav-user {
     width: 58px;
     height: 58px;
+  }
+  .org-sidebar {
+    position: absolute;
+    height: 100%;
+    z-index: 1;
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.4);
+  }
+  .sidebar-toggle {
+    display: block;
   }
 }
 @media screen and (max-width: 568px) {
@@ -66,7 +77,7 @@ button:hover .text-xs {
     margin-top: 4rem;
     gap: 3rem;
   }
-  .logo-text{
+  .logo-text {
     display: none;
   }
 }

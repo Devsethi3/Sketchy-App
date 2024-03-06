@@ -82,7 +82,7 @@ const CreateBoardModal = ({ isOpen, setIsOpen }: CreateBoardModalProps) => {
     return (
         <>
             {isOpen && (
-                <div className="fixed top-0 pointer-events-auto left-0 z-30 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
+                <div className="fixed top-0 pointer-events-auto left-0 z-50 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
                     <div className="modal-content bg-white text-black w-[450px] p-8 rounded-md shadow-md">
                         <div className="flex items-center mb-4 justify-between">
                             <h2 className="text-2xl font-bold">Create Board</h2>

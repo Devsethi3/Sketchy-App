@@ -35,7 +35,7 @@ const DashboardTeam = () => {
     }, [session]); // Fetch teams whenever the session changes
 
     return (
-        <div className="flex flex-col gap-5 items-center mt-12 mr-16 justify-center">
+        <div className="flex flex-col gap-5 items-center mt-12 mr-0 lg:mr-16 justify-center">
             {isLoading ? (
                 <div className="w-10 mt-10 h-10 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
             ) : (
@@ -43,8 +43,8 @@ const DashboardTeam = () => {
                     {teams.length > 0 ? (
                         <>
                             <Image loading="lazy" src="/images/data-team.svg" width={600} height={600} alt="data team" />
-                            <p>Your team is created!</p>
-                            <p>Now you can collaborate and start working together.</p>
+                            <p className='lg:text-start text-center'>Your team is created!</p>
+                            <p className='lg:text-start text-center'>Now you can collaborate and start working together.</p>
                         </>
                     ) : (
                         <>

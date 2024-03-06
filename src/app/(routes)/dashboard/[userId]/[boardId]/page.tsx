@@ -30,8 +30,8 @@ const TeamBoard = () => {
       {isLoading ? (
         <BoardSkeleton />
       ) : (
-        <div className="container mx-auto px-4 py-8">
-          <h2 className="text-3xl font-bold my-5">Team Boards</h2>
+        <div className="container mx-auto my-5 px-4">
+          <h2 className="text-2xl lg:text-3xl ml-4 lg:text-start text-center font-bold my-5">Team Boards</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {teamBoards.map((board, index) => (
               <div key={index} className="bg-white rounded-lg shadow-lg p-4 hover:scale-105 transition-all duration-300 ease-in-out">
