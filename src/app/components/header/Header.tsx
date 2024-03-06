@@ -9,10 +9,13 @@ import { BiSolidDashboard } from "react-icons/bi"
 import { TbLogout } from "react-icons/tb"
 import { motion } from 'framer-motion'
 import { useRouter } from "next/navigation"
+import { MdOutlineClose } from "react-icons/md"
+import { HiMenu } from 'react-icons/hi'
 
 const Header = () => {
 
     const [isOpen, setIsOpen] = useState(false);
+    const [isMenu, setIsMenu] = useState(false);
     const { data: session } = useSession();
 
     const router = useRouter();
@@ -24,28 +27,31 @@ const Header = () => {
         <div className="border-b-2 shadow-lg">
             <header className="container">
                 <div className="backdrop-blur-sm">
-                    <div className="flex h-20 items-center justify-between">
+                    <div className="flex h-[4.5rem] items-center justify-between">
                         <Link href="/" className="flex items-center gap-2">
                             <Image src="/images/logo.svg" alt="logo" width={50} height={50} />
-                            <p className="text-3xl font-extrabold pl-4 border-l-2 border-black">SKETCHY</p>
+                            <p className="text-2xl md:text-3xl lg:text-3xl font-extrabold pl-4 border-l-2 pt-[.4rem] border-gray-500   logo-text">SKETCHY</p>
                         </Link>
-                        <div className="hidden md:block">
-                            <nav aria-label="Global">
+                        <div className={`nav-menu ${isMenu ? "show-menu" : "nav-menu"}`}>
+                            <nav aria-label="Global" className="">
                                 <ul className="flex items-center gap-10">
+                                    <button onClick={() => setIsMenu(!isMenu)} className="block md:hidden">
+                                        <MdOutlineClose className="nav-close" />
+                                    </button>
                                     <li>
-                                        <Link href="/" className="text-gray-700 transition hover:text-gray-700/75"> Home </Link>
+                                        <Link href="/" className="text-gray-700 transition nav-link hover:text-gray-700/75"> Home </Link>
                                     </li>
                                     <li>
-                                        <Link href="/" className="text-gray-700 transition hover:text-gray-700/75"> About </Link>
+                                        <Link href="/" className="text-gray-700 transition nav-link hover:text-gray-700/75"> About </Link>
                                     </li>
                                     <li>
-                                        <Link href="/" className="text-gray-700 transition hover:text-gray-700/75"> Pricing </Link>
+                                        <Link href="/" className="text-gray-700 transition nav-link hover:text-gray-700/75"> Pricing </Link>
                                     </li>
                                     <li>
-                                        <Link href="/" className="text-gray-700 transition hover:text-gray-700/75"> Dashboard </Link>
+                                        <Link href="/" className="text-gray-700 transition nav-link hover:text-gray-700/75"> Dashboard </Link>
                                     </li>
                                     <li>
-                                        <Link href="/" className="text-gray-700 transition hover:text-gray-700/75"> Team </Link>
+                                        <Link href="/" className="text-gray-700 transition nav-link hover:text-gray-700/75"> Team </Link>
                                     </li>
                                 </ul>
                             </nav>
@@ -56,14 +62,10 @@ const Header = () => {
                                 <Link href="/login">
                                     <Buttons content="Login" type="primary" />
                                 </Link>
-
-                                <div className="hidden sm:flex">
-                                    <Buttons content="Register" type="secondary" />
-                                </div>
                             </div> :
                                 <div className="relative">
                                     <div>
-                                        <Image onClick={() => setIsOpen(!isOpen)} src={session?.user?.image || "/default-image.jpg"} width={60} height={60} alt="user" className="rounded-full p-3 hover:bg-slate-100 cursor-pointer transition-all" />
+                                        <Image onClick={() => setIsOpen(!isOpen)} src={session?.user?.image || "/default-image.jpg"} width={65} height={65} alt="user" className="rounded-full nav-user p-3 hover:bg-slate-100 cursor-pointer transition-all" />
                                     </div>
                                     {isOpen && <motion.div
                                         initial={{ opacity: 0, y: 50 }}
@@ -87,17 +89,8 @@ const Header = () => {
                             }
 
                             <div className="block md:hidden">
-                                <button className="rounded bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        className="h-5 w-5"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                    >
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                                    </svg>
+                                <button onClick={() => setIsMenu(!isMenu)} className="rounded bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75">
+                                    <HiMenu className="text-xl" />
                                 </button>
                             </div>
                         </div>

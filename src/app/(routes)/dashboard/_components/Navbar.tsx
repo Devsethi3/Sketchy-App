@@ -3,15 +3,10 @@
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
-import { BiHomeAlt2, BiSolidDashboard } from "react-icons/bi";
 import { CgSearch } from "react-icons/cg";
-import { GoPlus } from "react-icons/go";
-import { LuPencil } from "react-icons/lu";
 import { TbLogout } from "react-icons/tb";
 import { motion } from 'framer-motion'
 import { useRouter } from "next/navigation";
-import { VscHome } from "react-icons/vsc";
-import { RiHome4Fill } from "react-icons/ri";
 import { MdHome } from "react-icons/md";
 
 const Navbar = () => {
@@ -31,10 +26,6 @@ const Navbar = () => {
                     <CgSearch className="text-xl text-gray-500 mr-3" />
                     <input type="search" placeholder="Search Boards" className="bg-transparent pt-[.2rem] w-full outline-none" />
                 </div>
-                <button className="flex items-center gap-3 bg-slate-50 border py-2 px-5 rounded-md">
-                    <GoPlus />
-                    <span className="whitespace-nowrap pt-[.2rem] font-medium text-sm">Invite Members</span>
-                </button>
                 <div className="relative">
                     <div>
                         <Image onClick={() => setIsOpen(!isOpen)} src={session?.user?.image || "/default-image.jpg"} width={70} height={70} alt="user" className="rounded-full p-2 hover:bg-slate-100 cursor-pointer transition-all" />

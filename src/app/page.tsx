@@ -32,7 +32,7 @@ const page = () => {
             The road to freedom starts from here
           </p>
           <div className="flex flex-col items-center">
-            <h1 className="text-6xl font-bold">Experience the Future of</h1>
+            <h1 className="text-4xl text-center md:text-4xl lg:text-5xl xl:text-6xl font-bold">Experience the Future of</h1>
             <TypewriterEffectSmooth words={words} />
           </div>
           <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 space-x-0 md:space-x-4">

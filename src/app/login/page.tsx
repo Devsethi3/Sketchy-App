@@ -2,14 +2,25 @@
 import { signIn, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc"
+import { RxGithubLogo } from "react-icons/rx";
 
 const LoginPage = () => {
     const { data: session } = useSession();
 
     const router = useRouter()
 
-    const handleSignIn = async () => {
+    const handleSignInWithGoogle = async () => {
         const result = await signIn('google', { callbackUrl: `/dashboard/${session?.user?.email}` });
+
+        if (result?.error) {
+            console.error("Sign-in failed:", result.error);
+        } else if (result?.url) {
+            router.push(result.url);
+        }
+    };
+
+    const handleSignInWithGithub = async () => {
+        const result = await signIn('github', { callbackUrl: `/dashboard/${session?.user?.email}` });
 
         if (result?.error) {
             console.error("Sign-in failed:", result.error);
@@ -45,9 +56,13 @@ const LoginPage = () => {
                             </p>
 
                             <div className="flex flex-col items-center gap-5 mt-5">
-                                <button onClick={handleSignIn} className="flex bg-[#d2d2ff]  rounded-md transition-all w-full items-center gap-3 py-2.5 justify-center">
+                                <button onClick={handleSignInWithGoogle} className="flex bg-[#d2d2ff]  rounded-md transition-all w-full items-center gap-3 py-2.5 justify-center">
                                     <FcGoogle className="text-xl" />
                                     <span className="pt-[.3rem] font-medium">Continue With Google</span>
+                                </button>
+                                <button onClick={handleSignInWithGithub} className="flex bg-[#d2d2ff]  rounded-md transition-all w-full items-center gap-3 py-2.5 justify-center">
+                                    <RxGithubLogo className="text-xl" />
+                                    <span className="pt-[.3rem] font-medium">Continue With Github</span>
                                 </button>
                             </div>
 

@@ -155,10 +155,10 @@ export const TypewriterEffectSmooth = ({
         }}
       >
         <div
-          className="text-xs sm:text-base md:text-xl lg:text:3xl xl:text-6xl font-bold"
-          style={{
-            whiteSpace: "nowrap",
-          }}
+          className="text-4xl text-center lg:whitespace-nowrap whitespace-break-spaces md:text-4xl lg:text-5xl xl:text-6xl font-bold"
+          // style={{
+          //   whiteSpace: "nowrap",
+          // }}
         >
           {renderWords()}{" "}
         </div>{" "}
