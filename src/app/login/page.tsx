@@ -20,7 +20,7 @@ const LoginPage = () => {
 
     return (
         <>
-            <section className="bg-white">
+            <section className="bg-[#ffffff]">
                 <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
                     <aside className="relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6">
                         <img
@@ -39,13 +39,13 @@ const LoginPage = () => {
                                 Welcome to Sketchy
                             </h1>
 
-                            <p className="mt-4 leading-relaxed text-gray-500">
+                            <p className="mt-4 leading-relaxed lg:text-base text-sm text-gray-500">
                                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi nam dolorum aliquam,
                                 quibusdam aperiam voluptatum.
                             </p>
 
                             <div className="flex flex-col items-center gap-5 mt-5">
-                                <button onClick={handleSignInWithGoogle} className="flex bg-[#d2d2ff]  rounded-md transition-all w-full items-center gap-3 py-2.5 justify-center">
+                                <button onClick={handleSignInWithGoogle} className="flex bg-[#ffffff] border shadow-lg  rounded-md transition-all w-full items-center gap-3 py-2.5 justify-center">
                                     <FcGoogle className="text-xl" />
                                     <span className="pt-[.3rem] font-medium">Continue With Google</span>
                                 </button>

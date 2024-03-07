@@ -35,7 +35,7 @@ const TeamBoard = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {teamBoards.map((board, index) => (
               <div key={index} className="bg-white rounded-lg shadow-lg p-4 hover:scale-105 transition-all duration-300 ease-in-out">
-                <p className="text-lg font-semibold mb-2">Board Name: {board.boardName}</p>
+                <p className="lg:text-lg text-normal font-semibold mb-2">Board Name: {board.boardName}</p>
                 {board.teamName && (
                   <p className="text-gray-500 mb-4">Team: {board.teamName.name}</p>
                 )}

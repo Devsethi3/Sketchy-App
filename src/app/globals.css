@@ -62,8 +62,21 @@ button:hover .text-xs {
   .org-sidebar {
     position: absolute;
     height: 100%;
-    z-index: 1;
+    z-index: 2;
     box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.4);
+    padding: 1rem 0;
+    gap: 2rem;
+  }
+  .sidebar-btn{
+    margin-top: 2rem;
+    margin-inline: 2rem;
+  }
+  .sidebar-logo{
+    margin-inline: 2rem;
+    margin-bottom: 2rem;
+  }
+  .sidebar-select{
+    margin-inline: 2rem;
   }
   .sidebar-toggle {
     display: block;

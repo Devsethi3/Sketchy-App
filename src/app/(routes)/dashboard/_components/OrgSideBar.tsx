@@ -40,13 +40,17 @@ const OrgSideBar = () => {
     useEffect(() => {
         if (pathName === `/dashboard/${session?.user?.email}/team-boards/favourites`) {
             setIsFavActive(true)
+            setIsBoardActive(false);
         }
         else if (pathName === `/dashboard/${session?.user?.email}/team-boards`) {
             setIsBoardActive(true);
+            setIsFavActive(false)
         }
     }, [pathName]);
 
     const handleTeamSelect = (team: Team) => {
+        setIsBoardActive(false);
+        setIsFavActive(false)
         if (selectedTeam?.id === team.id) {
             setIsOpen(!isOpen);
         } else {
@@ -101,7 +105,7 @@ const OrgSideBar = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
                 transition={{ duration: 0.2 }}
-                className={`lg:flex relative h-screen org-sidebar bg-[#ffffff] transition-width duration-200 ease-in-out lg:flex-col lg:space-y-6 ${isToggle ? "min-w-[230px]" : "w-[10px]"} lg:pl-5 lg:pt-2`}
+                className={`lg:flex relative h-screen org-sidebar bg-[#ffffff] transition-width duration-200 ease-in-out lg:flex-col lg:space-y-6 ${isToggle ? "lg:min-w-[250px] w-[250px]" : "w-[10px]"} lg:pl-5 lg:pt-2`}
             >
                 <motion.div
                     initial={{ opacity: 0, x: -50 }}
@@ -121,21 +125,21 @@ const OrgSideBar = () => {
                         />
                     )}
                 </motion.div>
-                <div className={`${isToggle ? "block" : "hidden"} flex overflow-hidden items-center gap-4 p-3 rounded-md`}>
+                <div className={`${isToggle ? "block" : "hidden"} flex overflow-hidden justify-center items-center gap-4 p-1 sidebar-logo rounded-md`}>
                     <Link href={`/dashboard/${session?.user?.email}`} className="flex items-center gap-2">
                         <Image src="/images/logo.svg" width={40} height={40} alt="logo" />
                         <p className="font-bold text-xl pt-[.4rem]">SKETCHY</p>
                     </Link>
                 </div>
-                <div className={`flex relative ${isToggle ? null : "overflow-hidden"} items-center flex-col`}>
+                <div className={`flex relative ${isToggle ? null : "overflow-hidden"} sidebar-select items-center flex-col`}>
                     <button
                         onClick={handleSelectTeam}
-                        className={`flex items-center gap-4 bg-slate-50 hover:bg-blue-100 p-2.5 rounded-md ${isOpen ? "bg-blue-500" : ""}`}
+                        className={`flex items-center w-full gap-4 justify-center bg-slate-50 hover:bg-blue-100 p-2.5 rounded-md ${isOpen ? "bg-blue-500" : ""}`}
                     >
-                        <div className="w-6 h-6 grid place-items-center text-white font-semibold pt-0.5 rounded-md bg-teal-700">
+                        <div className="w-6 h-6 grid place-items-center lg:text-base text-sm text-white font-semibold pt-0.5 rounded-md bg-teal-700">
                             {selectedTeam?.name ? selectedTeam.name.charAt(0) : "S"}
                         </div>
-                        <p className="pt-[.3rem] whitespace-nowrap font-medium">
+                        <p className="pt-[.3rem] whitespace-nowrap lg:text-base text-sm font-medium">
                             {selectedTeam?.name ? selectedTeam.name : "Select Team"}
                         </p>
                         <LuChevronsUpDown className="text-xl text-gray-600" />
@@ -171,20 +175,19 @@ const OrgSideBar = () => {
                         </motion.div>
                     )}
                 </div>
-                <div className="flex relative overflow-hidden gap-5 items-start mx-2 flex-col">
+                <div className="flex relative sidebar-btn overflow-hidden gap-5 items-start mx-2 flex-col">
                     <button
                         onClick={handleTeamBoardsClick}
-                        className={`flex items-center gap-4 w-full border hover:bg-[#4F46E5] transition-all hover:text-white p-2.5 rounded-md ${isBoardActive ? 'bg-[#4F46E5] text-white' : ''}`}
+                        className={`flex items-center gap-4 w-full lg:text-base text-sm border hover:bg-[#4F46E5] transition-all hover:text-white p-2.5 rounded-md ${isBoardActive ? 'bg-[#4F46E5] text-white' : ''}`}
                     >
                         <BiSolidDashboard />
                         <span className="pt-[.2rem] font-medium">Team Boards</span>
                     </button>
 
-                    <button onClick={handleFavouritesClick} className={`flex items-center gap-4 w-full border hover:bg-[#4F46E5] transition-all hover:text-white p-2.5 rounded-md ${isFavActive ? 'bg-[#4F46E5] text-white' : ''}`}>
+                    <button onClick={handleFavouritesClick} className={`flex lg:text-base text-sm items-center gap-4 w-full border hover:bg-[#4F46E5] transition-all hover:text-white p-2.5 rounded-md ${isFavActive ? 'bg-[#4F46E5] text-white' : ''}`}>
                         <FaStar />
                         <span className="pt-[.2rem] font-medium">Favourite Boards</span>
                     </button>
-                    {/* Do the same thing with this button as well match the url */}
                     {isModalOpen && <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />}
                 </div>
             </motion.div>

@@ -42,7 +42,7 @@ const FavouritesPage = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {favoriteBoards.map((board, index) => (
                         <div key={index} className="bg-white rounded-lg shadow-lg p-4 hover:scale-105 transition-all duration-300 ease-in-out">
-                            <p className="text-lg font-semibold mb-2">Board Name: {board.boardName}</p>
+                            <p className="lg:text-lg text-normal font-semibold mb-2">Board Name: {board.boardName}</p>
                             {board.teamName && (
                                 <p className="text-gray-500 mb-4">Team: {board.teamName.name}</p>
                             )}
@@ -56,7 +56,7 @@ const FavouritesPage = () => {
                                     <Image src={board.teamName.userImage} alt="user Image" width={38} height={38} className='rounded-full' objectFit='cover' />
                                     <div className='flex flex-col'>
                                         <p className="text-sm text-gray-500">User: {board.teamName?.userName}</p>
-                                        <p className="text- text-gray-500">Email: {board.teamName?.userEmail}</p>
+                                        <p className="text-xs text-gray-500">Email: {board.teamName?.userEmail}</p>
                                     </div>
                                 </div>
                             </div>

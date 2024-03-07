@@ -81,7 +81,7 @@ const Info = () => {
           </div>
           {isModalOpen && (
             <div className="fixed top-0 pointer-events-auto left-0 z-30 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
-              <div className="bg-white w-[450px] p-8 rounded-md shadow-md">
+              <div className="bg-white lg:w-[450px] w-full mx-3 p-8 rounded-md shadow-md">
                 <h2 className="text-xl font-bold mb-4">Copy Board Link</h2>
                 <p className="text-gray-700 mb-4">Here is the board link:</p>
                 <div className="py-2 px-5 bg-slate-50 rounded-md mb-8 flex items-center gap-4">

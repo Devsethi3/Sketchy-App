@@ -82,9 +82,9 @@ const CreateBoard = () => {
     }, [selectedTeam, session]);
 
     return (
-        <div>
+        <div className="my-5">
             <h2 className="text-2xl lg:text-3xl lg:text-start text-center font-bold my-5">Team Boards</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mr-5 lg:mr-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mr-3 lg:mr-10">
                 <div onClick={() => setIsModalOpen(true)} className="bg-[#4F46E5] cursor-pointer rounded-md flex-col flex items-center justify-center h-[230px] lg:h-[300px] text-white">
                     <button className="text-4xl">
                         <GoPlusCircle />
