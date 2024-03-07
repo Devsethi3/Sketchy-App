@@ -8,7 +8,7 @@ import { colorToCss } from "@/libs/utils";
 import { Note } from "./Note";
 import { Ellipse } from "./Ellipse";
 import { Rectangle } from "./Rectangle";
-import { Text } from "./Text";
+// import { Text } from "./Text";
 
 
 interface LayerPreviewProps {
@@ -50,15 +50,15 @@ export const LayerPreview = memo(({
                     selectionColor={selectionColor}
                 />
             );
-        case LayerType.Text:
-            return (
-                <Text
-                    id={id}
-                    layer={layer}
-                    onPointerDown={onLayerPointerDown}
-                    selectionColor={selectionColor}
-                />
-            );
+        // case LayerType.Text:
+        //     return (
+        //         <Text
+        //             id={id}
+        //             layer={layer}
+        //             onPointerDown={onLayerPointerDown}
+        //             selectionColor={selectionColor}
+        //         />
+        //     );
         case LayerType.Ellipse:
             return (
                 <Ellipse
