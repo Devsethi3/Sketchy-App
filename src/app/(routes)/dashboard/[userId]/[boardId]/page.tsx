@@ -1,19 +1,30 @@
 "use client"
 import { useState, useEffect } from 'react';
 import { db } from '@/config/firebaseConfig';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, DocumentData } from 'firebase/firestore';
 import Image from 'next/image';
 import BoardSkeleton from '@/app/components/skeletonLoading/BoardSkeleton';
 
+interface Board {
+  boardName: string;
+  teamName?: {
+    name: string;
+    userImage: string;
+    userName: string;
+    userEmail: string;
+  };
+  imageUrl: string;
+}
+
 const TeamBoard = () => {
-  const [teamBoards, setTeamBoards] = useState([]);
+  const [teamBoards, setTeamBoards] = useState<Board[]>([]); // Specify the type here
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchTeamBoards = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'boards'));
-        const boardsData = querySnapshot.docs.map(doc => doc.data());
+        const boardsData: Board[] = querySnapshot.docs.map(doc => doc.data() as Board); // Cast to Board type
         setTeamBoards(boardsData);
         setIsLoading(false); // Set loading to false after data is fetched
       } catch (error) {
@@ -23,7 +34,6 @@ const TeamBoard = () => {
 
     fetchTeamBoards();
   }, []);
-
 
   return (
     <>
@@ -46,7 +56,7 @@ const TeamBoard = () => {
                     </div>
                   )}
                   <div className='flex items-center gap-3'>
-                    <Image src={board.teamName.userImage} alt="user Image" width={38} height={38} className='rounded-full' objectFit='cover' />
+                    <Image src={board?.teamName?.userImage || "/default-image.jpg"} alt="user Image" width={38} height={38} className='rounded-full' objectFit='cover' />
                     <div className='flex flex-col'>
                       <p className="text-sm text-gray-500">User: {board.teamName?.userName}</p>
                       <p className="text-xs text-gray-500">Email: {board.teamName?.userEmail}</p>
