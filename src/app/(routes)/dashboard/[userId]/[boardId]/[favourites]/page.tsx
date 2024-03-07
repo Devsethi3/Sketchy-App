@@ -19,7 +19,7 @@ interface Board {
 }
 
 const FavouritesPage = () => {
-    const [favoriteBoards, setFavoriteBoards] = useState<Board[]>([]); // Specify the type here
+    const [favoriteBoards, setFavoriteBoards] = useState<Board[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const { data: session } = useSession();
 
@@ -29,11 +29,11 @@ const FavouritesPage = () => {
                 if (!session || !session.user || !session.user.email) return;
 
                 const querySnapshot = await getDocs(collection(db, 'boards'));
-                const boardsData = querySnapshot.docs.map(doc => doc.data() as Board); // Cast to Board type
+                const boardsData = querySnapshot.docs.map(doc => doc.data() as Board);
 
                 const filteredBoards = boardsData.filter(board => {
                     if (!board.favorites || !Array.isArray(board.favorites)) return false;
-                    return board.favorites.includes(session?.user?.email);
+                    return board.favorites.includes(session?.user?.email ?? ""); // Provide default value if email is null or undefined
                 });
 
                 setFavoriteBoards(filteredBoards);
@@ -64,7 +64,7 @@ const FavouritesPage = () => {
                                     </div>
                                 )}
                                 <div className='flex items-center gap-3'>
-                                    <Image src={board.teamName.userImage} alt="user Image" width={38} height={38} className='rounded-full' objectFit='cover' />
+                                    <Image src={board?.teamName?.userImage || "/default-image.jpg"} alt="user Image" width={38} height={38} className='rounded-full' objectFit='cover' />
                                     <div className='flex flex-col'>
                                         <p className="text-sm text-gray-500">User: {board.teamName?.userName}</p>
                                         <p className="text-xs text-gray-500">Email: {board.teamName?.userEmail}</p>
