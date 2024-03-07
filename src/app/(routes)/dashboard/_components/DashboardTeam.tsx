@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import Modal from "@/app/components/modal/Modal";
@@ -49,7 +49,7 @@ const DashboardTeam = () => {
                     ) : (
                         <>
                             <Image loading="lazy" src="/images/forest.svg" width={600} height={600} alt="forest" />
-                            <p>You haven't created your team yet.</p>
+                            <p>You haven&apos;t created your team yet.</p>
                             <button className="py-2.5 pt-[.8rem] rounded-md px-8 text-white bg-[#4F46E5]" onClick={() => setIsOpen(!isOpen)}>Create Your Team</button>
                             {isOpen && <Modal isOpen={isOpen} setIsOpen={setIsOpen} />}
                         </>

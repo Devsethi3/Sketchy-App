@@ -14,7 +14,7 @@ interface SelectionToolsProps {
     setLastUsedColor: (color: Color) => void
 }
 
-export const SelectionTools = memo(({ camera, setLastUsedColor }: SelectionToolsProps) => {
+export const SelectionTools = memo(function SelectionTools({ camera, setLastUsedColor }: SelectionToolsProps) {
 
     const selection = useSelf((me) => me.presence.selection)
 

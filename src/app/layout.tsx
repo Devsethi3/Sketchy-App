@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Epilogue } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/providers/AuthProvider";
-import { Head } from "next/document";
 
 const inter = Epilogue({ subsets: ["latin"] });
 
