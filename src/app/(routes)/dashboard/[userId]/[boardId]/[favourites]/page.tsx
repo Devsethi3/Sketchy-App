@@ -6,8 +6,20 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import BoardSkeleton from '@/app/components/skeletonLoading/BoardSkeleton';
 
+interface Board {
+    boardName: string;
+    teamName?: {
+        name: string;
+        userImage: string;
+        userName: string;
+        userEmail: string;
+    };
+    imageUrl: string;
+    favorites: string[];
+}
+
 const FavouritesPage = () => {
-    const [favoriteBoards, setFavoriteBoards] = useState([]);
+    const [favoriteBoards, setFavoriteBoards] = useState<Board[]>([]); // Specify the type here
     const [isLoading, setIsLoading] = useState(true);
     const { data: session } = useSession();
 
@@ -17,16 +29,15 @@ const FavouritesPage = () => {
                 if (!session || !session.user || !session.user.email) return;
 
                 const querySnapshot = await getDocs(collection(db, 'boards'));
-                const boardsData = querySnapshot.docs.map(doc => doc.data());
+                const boardsData = querySnapshot.docs.map(doc => doc.data() as Board); // Cast to Board type
 
-                // Filter boards by favorite boards
                 const filteredBoards = boardsData.filter(board => {
                     if (!board.favorites || !Array.isArray(board.favorites)) return false;
                     return board.favorites.includes(session?.user?.email);
                 });
 
                 setFavoriteBoards(filteredBoards);
-                setIsLoading(false)
+                setIsLoading(false);
             } catch (error) {
                 console.error('Error fetching favorite boards:', error);
             }
