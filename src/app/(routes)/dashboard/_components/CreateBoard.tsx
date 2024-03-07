@@ -12,33 +12,44 @@ import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 import { BsThreeDots } from "react-icons/bs";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import { Team } from "@/types/teamTypes";
+
+interface Board {
+    id: string;
+    imageUrl: string;
+    boardName: string;
+    teamName: Team;
+    favorites?: string[];
+}
 
 const CreateBoard = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [boards, setBoards] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // Specify type boolean
+    const [boards, setBoards] = useState<Board[]>([]); // Specify type Board[]
     const { selectedTeam } = useSelectedTeam();
     const { data: session } = useSession();
-    const [likedBoards, setLikedBoards] = useState({});
-    const [loadingBoards, setLoadingBoards] = useState({});
-    const [selectedBoardId, setSelectedBoardId] = useState(null); // State to track selected board id
+    const [likedBoards, setLikedBoards] = useState<Record<string, boolean>>({}); // Specify type Record<string, boolean>
+    const [loadingBoards, setLoadingBoards] = useState<Record<string, boolean>>({}); // Specify type Record<string, boolean>
 
-    const toggleFavorite = async (boardId) => {
+    const [selectedBoardId, setSelectedBoardId] = useState<string | null>(null); // Specify type string | null
+
+    const toggleFavorite = async (boardId: string) => { // Specify type for boardId
         setLoadingBoards(prevLoadingBoards => ({ ...prevLoadingBoards, [boardId]: true }));
         try {
             const boardRef = doc(db, "boards", boardId);
             const boardSnapshot = await getDoc(boardRef);
-            const favorites = boardSnapshot.data().favorites || [];
-            const isFavorite = favorites.includes(session?.user?.email);
+            const boardData = boardSnapshot.data() as Board | undefined;
+            const favorites = boardData ? boardData.favorites || [] : [];
+            const isFavorite = favorites.includes(session?.user?.email || '');
 
             if (isFavorite) {
-                await updateDoc(boardRef, { favorites: arrayRemove(session?.user?.email) });
+                await updateDoc(boardRef, { favorites: arrayRemove(session?.user?.email || '') });
             } else {
-                await updateDoc(boardRef, { favorites: arrayUnion(session?.user?.email) });
+                await updateDoc(boardRef, { favorites: arrayUnion(session?.user?.email || '') });
             }
 
             setLikedBoards(prevLikedBoards => ({
                 ...prevLikedBoards,
-                [boardId]: !prevLikedBoards[boardId]
+                [boardId]: !prevLikedBoards[boardId as keyof typeof prevLikedBoards] // Add type assertion
             }));
         } catch (error) {
             console.error("Error toggling favorite:", error);
@@ -47,7 +58,8 @@ const CreateBoard = () => {
         }
     };
 
-    const handleDeleteBoard = async (boardId) => {
+
+    const handleDeleteBoard = async (boardId: string) => { // Specify type for boardId
         try {
             await deleteDoc(doc(db, "boards", boardId));
             setBoards(prevBoards => prevBoards.filter(board => board.id !== boardId));
@@ -59,16 +71,16 @@ const CreateBoard = () => {
     useEffect(() => {
         const fetchBoards = async () => {
             try {
-                const q = query(collection(db, "boards"), where("teamName.name", "==", selectedTeam.name));
+                const q = query(collection(db, "boards"), where("teamName.name", "==", selectedTeam?.name));
                 const querySnapshot = await getDocs(q);
-                const boardsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                const boardsData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Board));
 
                 setBoards(boardsData);
 
-                const initialLikedStatus = {};
-                const initialLoadingStatus = {};
+                const initialLikedStatus: Record<string, boolean> = {};
+                const initialLoadingStatus: Record<string, boolean> = {};
                 boardsData.forEach(board => {
-                    initialLikedStatus[board.id] = board.favorites?.includes(session?.user?.email) || false;
+                    initialLikedStatus[board.id] = board.favorites?.includes(session?.user?.email || '') || false;
                     initialLoadingStatus[board.id] = false;
                 });
                 setLikedBoards(initialLikedStatus);

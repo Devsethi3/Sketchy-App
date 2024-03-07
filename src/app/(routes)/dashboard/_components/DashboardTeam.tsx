@@ -2,15 +2,21 @@
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import Modal from "@/app/components/modal/Modal";
-import { useSelectedTeam } from "@/context/SelectedTeamContext";
-import { collection, getDocs, where, query } from 'firebase/firestore';
+import { collection, getDocs, where, query, DocumentData } from 'firebase/firestore';
 import { db } from '@/config/firebaseConfig';
 import { useSession } from 'next-auth/react';
 
+interface Team {
+    id: string;
+    name: string;
+    userEmail: string;
+}
+
+
 const DashboardTeam = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const { selectedTeam } = useSelectedTeam();
-    const [teams, setTeams] = useState([]);
+    const [teams, setTeams] = useState<Team[]>([]);
+
     const [isLoading, setIsLoading] = useState(true);
 
     const { data: session } = useSession();
@@ -21,7 +27,7 @@ const DashboardTeam = () => {
                 // Query teams based on user's email
                 const q = query(collection(db, 'teams'), where('userEmail', '==', session?.user?.email));
                 const querySnapshot = await getDocs(q);
-                const teamsData = querySnapshot.docs.map(doc => doc.data());
+                const teamsData: Team[] = querySnapshot.docs.map(doc => doc.data() as Team);
                 setTeams(teamsData);
                 setIsLoading(false);
             } catch (error) {
