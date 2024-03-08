@@ -26,7 +26,7 @@ const OrgSideBar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [teams, setTeams] = useState<Team[]>([]);
-    const { selectedTeam, setSelectedTeam } = useSelectedTeam();
+    const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
 
     const [isBoardActive, setIsBoardActive] = useState(false);
     const [isFavActive, setIsFavActive] = useState(false);
