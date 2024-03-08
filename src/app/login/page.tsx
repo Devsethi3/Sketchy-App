@@ -4,8 +4,7 @@ import { useRouter } from "next/navigation"
 import { FcGoogle } from "react-icons/fc"
 
 const LoginPage = () => {
-
-    const { data: session } = useSession()
+    const { data: session, status } = useSession() // Include status from useSession
 
     const router = useRouter();
 
@@ -13,7 +12,7 @@ const LoginPage = () => {
         await signIn('google', { callbackUrl: '/dashboard/:email' });
     };
 
-    if (status === 'authenticated' && session?.user?.email) {
+    if (status === 'authenticated' && session?.user?.email) { // Check status and session
         router.push(`/dashboard/${session.user.email}`);
         return null;
     }
