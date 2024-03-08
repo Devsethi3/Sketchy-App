@@ -1,22 +1,20 @@
 "use client";
 
 import { memo } from "react";
+import { GiArrowCursor } from "react-icons/gi";
 
 import { connectionIdToColor } from "../../../libs/utils";
 import { useOther } from "../../../../liveblocks.config";
-import { GiArrowCursor } from "react-icons/gi";
 
 interface CursorProps {
     connectionId: number;
-};
+}
 
-export const Cursor = memo(({
-    connectionId,
-}: CursorProps) => {
-    const info = useOther(connectionId, (user) => user?.info);
-    const cursor = useOther(connectionId, (user) => user.presence.cursor)
+export const Cursor = memo(({ connectionId }: CursorProps) => {
+    const info = useOther(connectionId, (user) => user?.info || {}) as { name?: string };
+    const cursor = useOther(connectionId, (user) => user.presence.cursor);
 
-    const name = info?.name || "Teammate";
+    const name = info.name || "Teammate";
 
     if (!cursor) {
         return null;
@@ -47,7 +45,7 @@ export const Cursor = memo(({
                 {name}
             </div>
         </foreignObject>
-    )
+    );
 });
 
 Cursor.displayName = "Cursor";
