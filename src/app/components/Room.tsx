@@ -1,5 +1,4 @@
 "use client"
-
 import { ReactNode } from "react"
 import { RoomProvider } from "../../../liveblocks.config"
 import { ClientSideSuspense } from "@liveblocks/react"
@@ -15,10 +14,12 @@ interface RoomProps {
 const Room = ({ children, roomId, fallback }: RoomProps) => {
     return (
         <>
-            <RoomProvider id={roomId} initialPresence={{
+            <RoomProvider id={roomId} initialPresence={(roomId) => ({
                 cursor: null,
-                selection: []
-            }} initialStorage={{
+                selection: [],
+                pencilDraft: null,
+                penColor: null,  
+            })} initialStorage={{
                 layers: new LiveMap<string, LiveObject<Layer>>(),
                 layerIds: new LiveList()
             }}>
