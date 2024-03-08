@@ -22,16 +22,11 @@ interface Board {
     favorites?: string[];
 }
 
-interface SelectedTeam {
-    id: string;
-    name: string;
-}
-
 const CreateBoard = () => {
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const [boards, setBoards] = useState<Board[]>([]);
-    const { selectedTeam } = useSelectedTeam<SelectedTeam>(); // Update the type argument
-    const { data: session } = useSession(); // Adjust the type for session
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // Specify type boolean
+    const [boards, setBoards] = useState<Board[]>([]); // Specify type Board[]
+    const { selectedTeam } = useSelectedTeam(); // Update the type argument
+    const { data: session } = useSession();
     const [likedBoards, setLikedBoards] = useState<Record<string, boolean>>({}); // Specify type Record<string, boolean>
     const [loadingBoards, setLoadingBoards] = useState<Record<string, boolean>>({}); // Specify type Record<string, boolean>
 
