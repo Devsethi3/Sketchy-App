@@ -1,71 +1,80 @@
 "use client"
 import { useState, useEffect } from 'react';
 import { db } from '@/config/firebaseConfig';
-import { collection, getDocs, DocumentData } from 'firebase/firestore';
-import Image from 'next/image';
+import { collection, getDocs, where, query, deleteDoc, doc } from 'firebase/firestore';
 import BoardSkeleton from '@/app/components/skeletonLoading/BoardSkeleton';
+import { RiDeleteBin5Line } from 'react-icons/ri';
 
-interface Board {
-  boardName: string;
-  teamName?: {
-    name: string;
-    userImage: string;
-    userName: string;
-    userEmail: string;
-  };
-  imageUrl: string;
+interface Team {
+  id: string;
+  teamName: string;
+  userImage: string;
+  userName: string;
+  userEmail: string;
+  boardCount: number;
 }
 
 const TeamBoard = () => {
-  const [teamBoards, setTeamBoards] = useState<Board[]>([]); // Specify the type here
+  const [teams, setTeams] = useState<Team[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchTeamBoards = async () => {
+    const fetchTeams = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'boards'));
-        const boardsData: Board[] = querySnapshot.docs.map(doc => doc.data() as Board); // Cast to Board type
-        setTeamBoards(boardsData);
-        setIsLoading(false); // Set loading to false after data is fetched
+        const querySnapshot = await getDocs(collection(db, 'teams'));
+        const teamsData: Team[] = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Team));
+        const teamsWithBoardCount: Team[] = await Promise.all(teamsData.map(async (team) => {
+          const boardQuerySnapshot = await getDocs(query(collection(db, 'boards'), where('teamName.name', '==', team.teamName)));
+          const boardCount = boardQuerySnapshot.size;
+          return { ...team, boardCount };
+        }));
+        setTeams(teamsWithBoardCount);
+        setIsLoading(false);
       } catch (error) {
-        console.error('Error fetching team boards:', error);
+        console.error('Error fetching teams:', error);
       }
     };
 
-    fetchTeamBoards();
+    fetchTeams();
   }, []);
 
+  const handleDeleteTeam = async (teamId: string) => {
+    console.log(teamId);
+  };
+
+  
   return (
     <>
       {isLoading ? (
         <BoardSkeleton />
       ) : (
         <div className="container mx-auto my-5 px-4">
-          <h2 className="text-2xl lg:text-3xl ml-4 lg:text-start text-center font-bold my-5">Team Boards</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {teamBoards.map((board, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-lg p-4 hover:scale-105 transition-all duration-300 ease-in-out">
-                <p className="lg:text-lg text-normal font-semibold mb-2">Board Name: {board.boardName}</p>
-                {board.teamName && (
-                  <p className="text-gray-500 mb-4">Team: {board.teamName.name}</p>
-                )}
-                <div className="flex flex-col space-y-4">
-                  {board.teamName && (
-                    <div className="w-full h-40 relative rounded overflow-hidden">
-                      <Image src={board.imageUrl} alt="Board Image" fill objectFit='cover' />
-                    </div>
-                  )}
-                  <div className='flex items-center gap-3'>
-                    <Image src={board?.teamName?.userImage || "/default-image.jpg"} alt="user Image" width={38} height={38} className='rounded-full' objectFit='cover' />
-                    <div className='flex flex-col'>
-                      <p className="text-sm text-gray-500">User: {board.teamName?.userName}</p>
-                      <p className="text-xs text-gray-500">Email: {board.teamName?.userEmail}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <h2 className="text-2xl lg:text-3xl ml-4 lg:text-start text-center font-bold my-5">Teams</h2>
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="py-2 px-4 text-left">Team Name</th>
+                <th className="py-2 px-4 text-left">User Name</th>
+                <th className="py-2 px-4 text-left">Board Count</th>
+                <th className="py-2 px-4 text-left">Delete Team</th>
+              </tr>
+            </thead>
+            <tbody>
+              {teams.map((team, index) => (
+                <tr key={team.id} className="border-b hover:bg-gray-50">
+                  <td className="py-2 px-4">{team.teamName}</td>
+                  <td className="py-2 px-4">{team.userName}</td>
+                  <td className="py-2 px-4">{team.boardCount}</td>
+                  <td className="py-2 px-4">
+                    <RiDeleteBin5Line
+                      onClick={() => handleDeleteTeam(team.id)}
+                      className='p-2 bg-red-100 rounded-full cursor-pointer text-red-500 text-3xl'
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </>

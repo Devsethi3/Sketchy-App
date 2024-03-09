@@ -1,9 +1,9 @@
 "use client"
 import React from 'react';
 import SideBar from "../_components/SideBar";
-import OrgSideBar from "../_components/OrgSideBar";
 import Navbar from "../_components/Navbar";
 import { SelectedTeamContextProvider, useSelectedTeam } from '@/context/SelectedTeamContext';
+import OrgSideBar from '../_components/OrgSideBar';
 
 interface LayoutProps {
   children: React.ReactNode;

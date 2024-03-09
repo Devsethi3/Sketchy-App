@@ -26,7 +26,7 @@ const OrgSideBar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [teams, setTeams] = useState<Team[]>([]);
-    const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
+    const { selectedTeam, setSelectedTeam } = useSelectedTeam();
 
     const [isBoardActive, setIsBoardActive] = useState(false);
     const [isFavActive, setIsFavActive] = useState(false);
@@ -97,7 +97,6 @@ const OrgSideBar = () => {
         router.push(`/dashboard/${session?.user?.email}`);
         setIsOpen(!isOpen)
     };
-
     return (
         <>
             <motion.div
@@ -131,7 +130,7 @@ const OrgSideBar = () => {
                         <p className="font-bold text-xl pt-[.4rem]">SKETCHY</p>
                     </Link>
                 </div>
-                <div className={`flex relative ${isToggle ? null : "overflow-hidden"} sidebar-select items-center flex-col`}>
+                <div className={`flex relative mx-2 ${isToggle ? null : "overflow-hidden"} sidebar-select items-center flex-col`}>
                     <button
                         onClick={handleSelectTeam}
                         className={`flex items-center w-full gap-4 justify-center bg-slate-50 hover:bg-blue-100 p-2.5 rounded-md ${isOpen ? "bg-blue-500" : ""}`}
