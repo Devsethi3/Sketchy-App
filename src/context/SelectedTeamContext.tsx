@@ -1,9 +1,14 @@
 "use client"
 import React, { createContext, useContext, ReactNode } from "react";
 
+interface SelectedTeam {
+  id: string;
+  name: string;
+}
+
 interface SelectedTeamContextType {
-  selectedTeam: string | null;
-  setSelectedTeam: (team: string | null) => void;
+  selectedTeam: SelectedTeam | null;
+  setSelectedTeam: (team: SelectedTeam | null) => void;
 }
 
 const SelectedTeamContext = createContext<SelectedTeamContextType>({
@@ -22,7 +27,9 @@ interface SelectedTeamContextProviderProps {
 export const SelectedTeamContextProvider = ({
   children,
 }: SelectedTeamContextProviderProps) => {
-  const [selectedTeam, setSelectedTeam] = React.useState<string | null>(null);
+  const [selectedTeam, setSelectedTeam] = React.useState<SelectedTeam | null>(
+    null
+  );
 
   return (
     <SelectedTeamContext.Provider value={{ selectedTeam, setSelectedTeam }}>

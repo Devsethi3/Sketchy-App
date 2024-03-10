@@ -62,8 +62,6 @@ const Canvas = () => {
     }, [canvasState]);
 
 
-
-
     const translateSelectedLayers = useMutation((
         { storage, self },
         point: Point,

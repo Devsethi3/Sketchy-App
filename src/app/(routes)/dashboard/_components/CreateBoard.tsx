@@ -22,22 +22,18 @@ interface Board {
     favorites?: string[];
 }
 
-interface SelectedTeam {
-    id: string;
-    name: string;
-}
-
 const CreateBoard = () => {
-    const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // Specify type boolean
-    const [boards, setBoards] = useState<Board[]>([]); // Specify type Board[]
-    const { selectedTeam } = useSelectedTeam<SelectedTeam>(); // Update the type argument
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [boards, setBoards] = useState<Board[]>([]);
+    const { selectedTeam } = useSelectedTeam(); // Updated to useSelectedTeam without specifying type argument
     const { data: session } = useSession();
-    const [likedBoards, setLikedBoards] = useState<Record<string, boolean>>({}); // Specify type Record<string, boolean>
-    const [loadingBoards, setLoadingBoards] = useState<Record<string, boolean>>({}); // Specify type Record<string, boolean>
+    const [likedBoards, setLikedBoards] = useState<Record<string, boolean>>({});
+    const [loadingBoards, setLoadingBoards] = useState<Record<string, boolean>>({});
+    const [isHovered, setIsHovered] = useState(false);
 
-    const [selectedBoardId, setSelectedBoardId] = useState<string | null>(null); // Specify type string | null
+    const [selectedBoardId, setSelectedBoardId] = useState<string | null>(null);
 
-    const toggleFavorite = async (boardId: string) => { // Specify type for boardId
+    const toggleFavorite = async (boardId: string) => {
         setLoadingBoards(prevLoadingBoards => ({ ...prevLoadingBoards, [boardId]: true }));
         try {
             const boardRef = doc(db, "boards", boardId);
@@ -54,7 +50,7 @@ const CreateBoard = () => {
 
             setLikedBoards(prevLikedBoards => ({
                 ...prevLikedBoards,
-                [boardId]: !prevLikedBoards[boardId as keyof typeof prevLikedBoards] // Add type assertion
+                [boardId]: !prevLikedBoards[boardId as keyof typeof prevLikedBoards]
             }));
         } catch (error) {
             console.error("Error toggling favorite:", error);
@@ -63,8 +59,7 @@ const CreateBoard = () => {
         }
     };
 
-
-    const handleDeleteBoard = async (boardId: string) => { // Specify type for boardId
+    const handleDeleteBoard = async (boardId: string) => {
         try {
             await deleteDoc(doc(db, "boards", boardId));
             setBoards(prevBoards => prevBoards.filter(board => board.id !== boardId));
@@ -109,20 +104,21 @@ const CreateBoard = () => {
                     <p className="mt-5 text-xl font-semibold">Create Board</p>
                 </div>
                 {boards.map(board => (
-                    <div key={board.id} className="min-h-[300px] border rounded-md">
-                        <div className="relative">
+                    <div key={board.id} className="min-h-[300px] border rounded-md" onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}>
+                        {isHovered && <div className="relative">
                             <BsThreeDots onClick={() => setSelectedBoardId(selectedBoardId === board.id ? null : board.id)} className="text-4xl absolute right-2 z-[1] cursor-pointer p-2 hover:bg-slate-200 top-2 shadow-lg bg-blue-50 rounded-full" />
                             {selectedBoardId === board.id && <motion.div
-                                initial={{ opacity: 0, y: 50 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: 50 }}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: .2, ease: "easeInOut" }}
                                 className="absolute top-14 rounded-md flex z-[1] flex-col shadow-lg gap-1 w-[150px] right-0">
                                 <button onClick={() => handleDeleteBoard(board.id)} className="flex bg-red-100 rounded-md p-2 hover:bg-red-400 hover:text-white px-4 items-center gap-3">
                                     <RiDeleteBin5Line className="text-xl" />
                                     <p className="font-medium pt-[.3rem]">Delete</p>
                                 </button>
                             </motion.div>}
-                        </div>
+                        </div>}
                         <Link href={`/whiteboard/${board.id}`}>
                             <div className="relative h-[250px]">
                                 <Image src={board?.imageUrl} fill objectFit="cover" alt={board.boardName} />
