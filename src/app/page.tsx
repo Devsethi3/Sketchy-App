@@ -27,8 +27,8 @@ const page = () => {
           <Header />
         </div>
 
-        <div className="flex flex-col gap-10 items-center justify-center h-[40rem]">
-          <p className="text-neutral-600 dark:text-neutral-200 text-xs sm:text-base  ">
+        <div className="flex flex-col gap-0 lg:gap-10 items-center justify-center h-[40rem]">
+          <p className="text-neutral-600 mb-4 dark:text-neutral-200 text-xs sm:text-base  ">
             The road to freedom starts from here
           </p>
           <div className="flex flex-col items-center">

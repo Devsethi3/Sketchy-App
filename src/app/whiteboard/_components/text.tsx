@@ -30,7 +30,7 @@ interface TextProps {
   selectionColor?: string;
 };
 
-export const Text = ({
+const Text = ({
   layer,
   onPointerDown,
   id,
@@ -77,3 +77,5 @@ export const Text = ({
     </foreignObject>
   );
 };
+
+export default Text;
