@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Sketchy App with Next.js, Firebase, and Liveblocks
+
+Welcome to the Sketchy App repository! This project is a Next.js-based web application designed to facilitate real-time collaboration on whiteboards among team members. Built with Next.js, Firebase, and Liveblocks, it allows users to create multiple teams, each with its own set of boards for collaboration. The app features a modern UI design with personal dashboards, favorite boards functionality, and a canvas whiteboard with various features.
+
+## Demo
+
+Check out the live demo of the Sketchy App [here](https://sketchy-app-five.vercel.app).
+
+## Preview
+
+### 1. User Dashboard
+
+![Sketchy App - User Dashboard](preview_dashboard.png)
+
+### 2. Favorite Boards
+
+![Sketchy App - Favorite Boards](preview_favorite_boards.png)
+
+### 3. Select Team
+
+![Sketchy App - Select Team](preview_select_team.png)
+
+### 4. Real-Time Collaborative Whiteboard with Teammate
+
+![Sketchy App - Real-Time Collaborative Whiteboard](preview_whiteboard.png)
+
+### 5. Stunning Canvas Whiteboard with Multiple Features
+
+![Sketchy App - Canvas Whiteboard](preview_canvas_whiteboard.png)
+
+## Features
+
+- **User Authentication:** Login and register using NextAuth.js for secure authentication.
+- **Team Creation:** Create multiple teams and invite team members for collaboration.
+- **Board Management:** Create, view, and collaborate on boards with real-time updates.
+- **Favorite Boards:** Add boards to favorites for quick access and organization.
+- **Canvas Whiteboard:** Collaborate with team members on a canvas whiteboard with multiple features.
+- **Personal Dashboard:** View user-specific information, teams, and favorite boards.
+- **Modern UI Design:** Sleek layout and visually appealing design for an enjoyable user interface.
 
 ## Getting Started
 
-First, run the development server:
+To run the Sketchy App locally, follow these steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Clone the repository to your local machine:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   ```bash
+   git clone https://github.com/Devsethi3/Sketchy-App.git
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. Navigate to the project directory:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+   ```bash
+   cd sketchy-app
+   ```
 
-## Learn More
+3. Install the dependencies:
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   npm install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. Start the development server:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+   ```bash
+   npm run dev
+   ```
 
-## Deploy on Vercel
+5. Open your web browser and visit [http://localhost:3000](http://localhost:3000) to use the app.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Usage
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Login or register using the authentication feature.
+2. Create or join teams and invite team members for collaboration.
+3. Create boards within teams and start collaborating on the canvas whiteboard.
+4. Add boards to favorites for quick access and organization.
+5. Enjoy the modern UI design and collaborate in real-time with team members.
+
+## Customization
+
+Feel free to customize this project to fit your preferences. Update styles, colors, and layout in the Next.js components and CSS files. You can also extend the functionality to include additional features or customization options.
+
+## Contributing
+
+If you'd like to contribute to this project, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch for your feature or improvement.
+3. Make your changes and commit them with descriptive messages.
+4. Push your changes to your forked repository.
+5. Open a pull request to merge your changes into the main branch.
+
+Explore the Sketchy App, collaborate in real-time with team members on whiteboards, and consider contributing to its development. Thank you for checking out the repository!
